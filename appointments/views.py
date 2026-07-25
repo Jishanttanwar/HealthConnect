@@ -10,14 +10,28 @@ from .serializers import AppointmentSerializer
 
 
 class AppointmentViewSet(viewsets.ModelViewSet):
-
-    queryset = Appointment.objects.select_related(
-        "doctor",
-        "doctor__user",
-        "patient",
-        "patient__user",
-    )
-
     serializer_class = AppointmentSerializer
-
     permission_classes = [IsAuthenticatedUser]
+
+    def get_queryset(self):
+
+        user = self.request.user
+
+        queryset = Appointment.objects.select_related(
+
+            "patient","patient__user","doctor","doctor__user",
+        )
+
+        if user.role == "ADMIN":
+
+            return queryset
+
+        elif user.role == "DOCTOR":
+
+            return queryset.filter(doctor__user=user)
+
+        elif user.role == "PATIENT":
+
+            return queryset.filter(patient__user=user)
+
+        return queryset.none()
