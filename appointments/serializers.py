@@ -10,6 +10,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Appointment
         fields = "__all__"
+        read_only_fields = ["patients"]
 
     def validate(self, data):
         appointment_date = data["appointment_date"]
