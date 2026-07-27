@@ -24,8 +24,6 @@ class Prescription(models.Model):
     def __str__(self):
         return f"Prescription {self.id}"
 
-
-
 class PrescriptionItem(models.Model):
     id = models.UUIDField(
         primary_key=True,

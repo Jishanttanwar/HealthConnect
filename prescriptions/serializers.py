@@ -13,6 +13,13 @@ class PrescriptionSerializer(serializers.ModelSerializer):
         model = Prescription
         fields = "__all__"
 
+    def validate_encounter(self, encounter):
+        if hasattr(encounter, "prescription"):
+            raise serializers.ValidationError(
+                "This encounter already has a prescription."
+            )
+        return encounter
+
     def create(self, validated_data):
         items = validated_data.pop("items")
 
