@@ -2,8 +2,8 @@ from django.shortcuts import render
 
 
 from rest_framework import viewsets
-from .models import DoctorProfile
-from .serializers import DoctorProfileSerializer
+from .models import DoctorAvailability
+from .serializers import DoctorAvailabilitySerializer
 from .permissions import IsAdminOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 
@@ -12,7 +12,7 @@ from django_filters.rest_framework import DjangoFilterBackend
 # Create your views here.
 
 class DoctorProfileViewSet(viewsets.ModelViewSet):
-    queryset = DoctorProfile.objects.select_related('user', 'department', 'specialization')
+    queryset = DoctorAvailability.objects.select_related('user', 'department', 'specialization')
     serializer_class = DoctorProfileSerializer
     permission_classes = [IsAdminOrReadOnly]
     filter_backends = [DjangoFilterBackend]
