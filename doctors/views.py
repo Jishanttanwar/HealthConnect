@@ -3,7 +3,7 @@ from django.shortcuts import render
 
 from rest_framework import viewsets
 from .models import DoctorAvailability
-from .serializers import DoctorAvailabilitySerializer
+from .serializers import DoctorProfileSerializer
 from .permissions import IsAdminOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 
