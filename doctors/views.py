@@ -7,6 +7,7 @@ from .serializers import DoctorProfileSerializer
 from .permissions import IsAdminOrReadOnly
 from django_filters.rest_framework import DjangoFilterBackend
 
+from .availability_serializers import DoctorAvailabilitySerializer
 
 
 # Create your views here.
@@ -17,5 +18,11 @@ class DoctorProfileViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAdminOrReadOnly]
     filter_backends = [DjangoFilterBackend]
     filterset_fields = {'department__name': ['exact'], 'specialization__name': ['exact']}
+
+class DoctorAvailabilityViewSet(viewsets.ModelViewSet):
+    queryset = DoctorAvailability.objects.select_related("doctor","doctor__user",)
+
+    serializer_class = DoctorAvailabilitySerializer
+    permission_classes = [IsAdminOrReadOnly]
 
 
