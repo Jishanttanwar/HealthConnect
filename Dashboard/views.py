@@ -14,6 +14,7 @@ from lab_reports.models import LabReport
 from medical_records.models import MedicalRecord
 from patients.models import PatientProfile
 from prescriptions.models import Prescription
+from notifications.models import Notification
 
 
 class AdminDashboardView(APIView):
@@ -56,6 +57,120 @@ class AdminDashboardView(APIView):
             "total_lab_reports": LabReport.objects.count(),
 
             "total_medical_records": MedicalRecord.objects.count(),
+        }
+
+        return Response(data)
+
+
+class DoctorDashboardView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        if request.user.role != "DOCTOR":
+            return Response(
+                {
+                    "detail": "Only doctors can access this dashboard."
+                },
+                status=403,
+            )
+
+        today = timezone.localdate()
+
+        appointments = Appointment.objects.filter(
+            doctor__user=request.user
+        )
+
+        data = {
+            "total_appointments": appointments.count(),
+
+            "appointments_today": appointments.filter(
+                appointment_date=today
+            ).count(),
+
+            "completed_appointments": appointments.filter(
+                status="COMPLETED"
+            ).count(),
+
+            "scheduled_appointments": appointments.filter(
+                status="SCHEDULED"
+            ).count(),
+
+            "confirmed_appointments": appointments.filter(
+                status="CONFIRMED"
+            ).count(),
+
+            "cancelled_appointments": appointments.filter(
+                status="CANCELLED"
+            ).count(),
+
+            "total_patients": appointments.values(
+                "patient"
+            ).distinct().count(),
+        }
+
+        return Response(data)
+
+class PatientDashboardView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def get(self, request):
+
+        if request.user.role != "PATIENT":
+            return Response(
+                {
+                    "detail": "Only patients can access this dashboard."
+                },
+                status=403,
+            )
+
+        today = timezone.localdate()
+
+        appointments = Appointment.objects.filter(
+            patient__user=request.user
+        )
+
+        data = {
+            "total_appointments": appointments.count(),
+
+            "appointments_today": appointments.filter(
+                appointment_date=today
+            ).count(),
+
+            "scheduled_appointments": appointments.filter(
+                status="SCHEDULED"
+            ).count(),
+
+            "confirmed_appointments": appointments.filter(
+                status="CONFIRMED"
+            ).count(),
+
+            "completed_appointments": appointments.filter(
+                status="COMPLETED"
+            ).count(),
+
+            "cancelled_appointments": appointments.filter(
+                status="CANCELLED"
+            ).count(),
+
+            "total_prescriptions": Prescription.objects.filter(
+                encounter__appointment__patient__user=request.user
+            ).count(),
+
+            "total_lab_reports": LabReport.objects.filter(
+                encounter__appointment__patient__user=request.user
+            ).count(),
+
+            "total_medical_records": MedicalRecord.objects.filter(
+                patient__user=request.user
+            ).count(),
+
+            "unread_notifications": Notification.objects.filter(
+                user=request.user,
+                is_read=False
+            ).count(),
         }
 
         return Response(data)
