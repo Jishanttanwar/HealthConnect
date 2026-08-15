@@ -15,7 +15,7 @@ class AppointmentSerializer(serializers.ModelSerializer):
         start_time = data["start_time"]
         end_time = data["end_time"]
         doctor = data["doctor"]
-        patient = data["patient"]
+        patient = data,["patient"]
 
         # Rule 1: Date cannot be in the past
         if appointment_date < date.today():

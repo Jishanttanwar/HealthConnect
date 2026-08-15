@@ -18,3 +18,7 @@ __pycache__/
 db.sqlite3
 media/
 staticfiles/
+
+
+# Generated OpenAPI schema
+schema.yml

@@ -56,9 +56,10 @@ INSTALLED_APPS = [
     'departments',
     'encounters',
     'rest_framework',
-    'drf_spectacular',
     'django_filters',
     'specializations',
+    'drf_spectacular',
+    'Dashboard',
 
 ]
 
@@ -160,6 +161,8 @@ REST_FRAMEWORK = {
     "DEFAULT_FILTER_BACKENDS": [
         "django_filters.rest_framework.DjangoFilterBackend",
     ],
+
+    "DEFAULT_SCHEMA_CLASS": "drf_spectacular.openapi.AutoSchema",
 }
 
 SIMPLE_JWT = {
