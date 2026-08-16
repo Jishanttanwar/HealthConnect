@@ -11,6 +11,7 @@ from .permissions import IsAdminOrReadOnly
 
 # Create your views here.
 
+from core.permissions import IsAdminOrReadOnly
 class DepartmentViewSet(viewsets.ModelViewSet):
     queryset = Department.objects.all()
     serializer_class = DepartmentSerializer
