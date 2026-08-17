@@ -4,6 +4,7 @@ from rest_framework import viewsets
 from .models import Specialization
 from .serializers import SpecializationSerializer
 from .permissions import IsAdminOrReadOnly
+from core.permissions import IsAdminOrReadOnly
 
 
 # Create your views here.
