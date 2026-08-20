@@ -11,7 +11,7 @@ router.register(
     basename="doctor"
 )
 router.register(
-    "availability",
+    "doctor-availability",
     DoctorAvailabilityViewSet,
     basename="doctor-availability",
 )
